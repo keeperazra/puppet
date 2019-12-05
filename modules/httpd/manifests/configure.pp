@@ -1,11 +1,10 @@
-class httpd::configure (
-	Optional[String] $httpd_conf = 'httpd.conf'
-) {
+class httpd::configure {
 
 file { '/etc/httpd/conf.d/welcome.conf':
 	ensure => absent,
 }
 
+$httpd_conf = lookup('httpd_conf')
 $source = "puppet:///modules/httpd/${httpd_conf}"
 
 file { '/etc/httpd/conf/httpd.conf':
