@@ -7,11 +7,13 @@ include httpd::configure
 exec { 'firewall-enable':
 	command => '/usr/bin/firewall-cmd --add-service http --permanent',
 	unless => '/usr/bin/firewall-cmd --list-services | /bin/grep -w http',
+	notify => Exec['firewall-reload'],
 }
 
 exec { 'firewall-reload':
 	command => '/usr/bin/firewall-cmd --reload',
 	require => Exec['firewall-enable'],
+	refreshonly => true
 }
 
 # Allow httpd to connect to mysql

@@ -13,6 +13,7 @@ exec { 'git_clone_mediawiki':
 	user => 'deployer',
 	group => 'deployer',
 	require => Package['git'],
+	notify => Exec['httpd-restart'],
 }
 
 if ( !defined( File['/var/www/html/mw'] ) ) {
@@ -31,11 +32,7 @@ exec { 'git_pull_mediawiki':
 	user => 'deployer',
 	group => 'deployer',
 	require => Exec['git_clone_mediawiki'],
-}
-
-exec { 'httpd-restart':
-	command => '/usr/bin/systemctl restart httpd',
-	require => [ Service['httpd'], Exec['git_clone_mediawiki'] ],
+	notify => Exec['httpd-restart'],
 }
 
 }

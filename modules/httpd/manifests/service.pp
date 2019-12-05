@@ -10,4 +10,10 @@ service { 'httpd':
 	require => Package['httpd'],
 }
 
+exec { 'httpd-restart':
+	command => '/usr/bin/systemctl restart httpd',
+	require => Service['httpd'],
+	refreshonly => true,
+}
+
 }
